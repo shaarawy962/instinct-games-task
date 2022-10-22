@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
+using UnityEngine;
+using Newtonsoft.Json;
+using System.IO;
 
 /// <summary>
 /// A struct storing the edges of the grid
@@ -16,6 +17,16 @@ public struct GridEdges
 }
 
 
+class GridData
+{
+    public int width, height;
+    public GridData(int width, int height)
+    {
+        this.width = width;
+        this.height = height;
+    }
+}
+
 
 /// <summary>
 /// The class responsible for creating the grid of the ground for the player to move and for placing collectibles, boxes, enemy turrets.
@@ -23,8 +34,8 @@ public struct GridEdges
 public class GameGrid : MonoBehaviour
 {
     [Header("Grid stats")]
-    [SerializeField] public int height = 10;
-    [SerializeField] public int width = 10;
+    [HideInInspector] public int height = 10;
+    [HideInInspector] public int width = 10;
     [SerializeField] private GameObject gridCellPrefab;
 
     public GridEdges gridEdges;
@@ -35,12 +46,22 @@ public class GameGrid : MonoBehaviour
 
     private List<GridCell> cellList;
 
+    GridData data;
 
     // Start is called before the first frame update
     void Awake()
     {
         cellList = new List<GridCell>();
+
+        string filepath = Application.streamingAssetsPath + "/grid-config.json";
+        Debug.Log(filepath);
+        data = this.readGridData(filepath);
+
+        width = data.width;
+        height = data.height;
+
         CreateGrid();
+        Debug.Log($"Grid data: height:{data.height} width: {data.width}");
     }
 
 
@@ -49,7 +70,7 @@ public class GameGrid : MonoBehaviour
     /// </summary>
     private void CreateGrid()
     {
-        grid = new GameObject[width, height];
+        grid = new GameObject[data.width, data.height];
 
 
         if (gridCellPrefab == null)
@@ -57,9 +78,9 @@ public class GameGrid : MonoBehaviour
             return;
         }
 
-        for( int x = 0; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
-            for(int z = 0; z < height; z++)
+            for (int z = 0; z < height; z++)
             {
                 grid[x, z] = Instantiate(gridCellPrefab, new Vector3(x * gridSpaceSize, 0, z * gridSpaceSize), Quaternion.identity);
                 var currentCell = grid[x, z].GetComponent<GridCell>();
@@ -108,7 +129,7 @@ public class GameGrid : MonoBehaviour
     /// <returns>A list of empty cells</returns>
     public List<GridCell> emptyCells()
     {
-        return cellList.FindAll(cell => !cell.isOccupied && cell.GetPosition() != new Vector2Int(0,0));
+        return cellList.FindAll(cell => !cell.isOccupied && cell.GetPosition() != new Vector2Int(0, 0));
     }
 
 
@@ -120,7 +141,7 @@ public class GameGrid : MonoBehaviour
 
     public GridCell getLastCell()
     {
-        return cellList[(height * width) -1];
+        return cellList[(height * width) - 1];
     }
 
     /// <summary>
@@ -129,25 +150,40 @@ public class GameGrid : MonoBehaviour
     /// <returns> a struct of the GridEdges of the grid to be used in the gameManager sript</returns>
     public GridEdges getEdges()
     {
-        gridEdges = new GridEdges{
+        gridEdges = new GridEdges
+        {
             lowerEdge = new GridCell[width],
             upperEdge = new GridCell[width],
             leftEdge = new GridCell[height],
             rightEdge = new GridCell[height],
         };
 
-        for(int x = 0; x < width; x++)
+        for (int x = 0; x < width; x++)
         {
             gridEdges.lowerEdge[x] = grid[x, 0].GetComponent<GridCell>();
             gridEdges.upperEdge[x] = grid[x, height - 1].GetComponent<GridCell>();
         }
 
-        for(int z = 0; z < height; z++)
+        for (int z = 0; z < height; z++)
         {
-            gridEdges.leftEdge[z] = grid[0,z].GetComponent<GridCell>();
+            gridEdges.leftEdge[z] = grid[0, z].GetComponent<GridCell>();
             gridEdges.rightEdge[z] = grid[width - 1, z].GetComponent<GridCell>();
         }
 
         return gridEdges;
+    }
+
+
+    GridData readGridData(string filepath)
+    {
+        using (StreamReader r = new StreamReader(filepath))
+        {
+            string Json = r.ReadToEnd();
+            Debug.Log(Json);
+            GridData data = JsonConvert.DeserializeObject<GridData>(Json);
+            Debug.Log($"{data.width} , {data.height}");
+            r.Dispose();
+            return data;
+        }
     }
 }

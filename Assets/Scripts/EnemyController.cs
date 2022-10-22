@@ -1,8 +1,12 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using Newtonsoft.Json;
 
-
+struct BulletStats
+{
+    public float bulletSpeed;
+}
 
 /// <summary>
 /// The full Coontroller logic of the enemy AI behaviour
@@ -16,9 +20,9 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float fireRate, reloadTime, magazine;
     [SerializeField] private float timeTillTarget;
     [SerializeField] private Transform shootingPos;
-    
-    private float lastFireTime;
 
+    private float lastFireTime;
+    private BulletStats bulletStats;
 
     ///FOV and Tracker systems references
     private ObjectTracker trackedObj;
@@ -35,6 +39,7 @@ public class EnemyController : MonoBehaviour
 
     private void Start()
     {
+        bulletStats = this.readBulletSpeed(Application.streamingAssetsPath + "/bullet-config.json");
         bulletsShot = 0;
         trackedObj = FindObjectOfType<ObjectTracker>();
         fov = GetComponent<FieldOfView>();
@@ -56,7 +61,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
-        if(fov.bCanSeePlayer && bulletsShot < magazine)
+        if (fov.bCanSeePlayer && bulletsShot < magazine)
         {
             currentRoutine = ShootRoutine();
         }
@@ -65,12 +70,12 @@ public class EnemyController : MonoBehaviour
         {
             currentRoutine = reloadRoutine();
         }
-        
+
         if (!fov.bCanSeePlayer)
         {
             currentRoutine = Idle();
         }
-        
+
         StartCoroutine(currentRoutine);
     }
 
@@ -92,13 +97,53 @@ public class EnemyController : MonoBehaviour
         bCanShoot = Time.time - lastFireTime > fireRate;
         if (bCanShoot && bulletsShot < magazine)
         {
-            Vector3 vTargetPosition = trackedObj.GetPredictedPosition(timeTillTarget);
-            Vector3 bulletVelocity = vTargetPosition - shootingPos.position;
-            float fVelocity = bulletVelocity.magnitude / timeTillTarget;
-            Projectile bullet = GameObject.Instantiate(bulletPrefab, shootingPos.position, Quaternion.identity).GetComponent<Projectile>();
-            bullet.Shoot(bulletVelocity.normalized, fVelocity);
-            bulletsShot++;
-            lastFireTime = Time.time;
+
+            /// <summary>
+            /// Constant Speed given (read from file) but Velocity is calculated by determining how much time to reach player position and hit player
+            /// doing some iterations to get the shortest distance that is closest to player to reach next frame
+            /// </summary>
+            int maxIterations = 100;
+            float fBaseCheckTime = 0.15f;
+            float timePerCheck = 0.15f;
+            if (bulletStats.bulletSpeed != 0)
+            {
+                int iterations = 0;
+                Projectile bulletInstance = GameObject.Instantiate(bulletPrefab, shootingPos.position, Quaternion.identity).GetComponent<Projectile>();
+                float checkTime = fBaseCheckTime;
+                Vector3 targetPosition = trackedObj.GetPredictedPosition(fBaseCheckTime);
+
+                Vector3 predictedProjectilePos = shootingPos.position + ((targetPosition - shootingPos.position).normalized * bulletStats.bulletSpeed * checkTime);
+                float fDistance = (targetPosition - predictedProjectilePos).magnitude;
+
+                while (fDistance > 1f && iterations < maxIterations)
+                {
+                    iterations++;
+                    checkTime += timePerCheck;
+                    targetPosition = trackedObj.GetPredictedPosition(checkTime);
+
+                    predictedProjectilePos = shootingPos.position + ((targetPosition - shootingPos.position).normalized * bulletStats.bulletSpeed * checkTime);
+                    fDistance = (targetPosition - predictedProjectilePos).magnitude;
+                }
+                Vector3 bulletVel = targetPosition - shootingPos.position;
+                bulletInstance.Shoot(bulletVel.normalized, bulletStats.bulletSpeed);
+                lastFireTime = Time.time;
+                bulletsShot++;
+            }
+            /// <summary>
+            /// if speed isn't given, then calculating both speed and velocity based on time and distance and shooting the bullet in the predicted direction
+            /// </summary>
+            /// <value></value>
+            else
+            {
+                Vector3 vTargetPosition = trackedObj.GetPredictedPosition(timeTillTarget);
+                Vector3 bulletVelocity = vTargetPosition - shootingPos.position;
+                float fVelocity = bulletVelocity.magnitude / timeTillTarget;
+                Projectile bullet = GameObject.Instantiate(bulletPrefab, shootingPos.position, Quaternion.identity).GetComponent<Projectile>();
+                bullet.Shoot(bulletVelocity.normalized, fVelocity);
+                bulletsShot++;
+                lastFireTime = Time.time;
+            }
+
         }
         return;
     }
@@ -112,5 +157,16 @@ public class EnemyController : MonoBehaviour
 
     }
 
+    private BulletStats readBulletSpeed(string filepath)
+    {
+        using (StreamReader reader = new StreamReader(filepath))
+        {
+            string Json = reader.ReadToEnd();
+            BulletStats bulletStats = JsonConvert.DeserializeObject<BulletStats>(Json);
+            Debug.Log($"BulletSpeed: {bulletStats.bulletSpeed}");
+            reader.Dispose();
+            return bulletStats;
+        }
+    }
 
 }

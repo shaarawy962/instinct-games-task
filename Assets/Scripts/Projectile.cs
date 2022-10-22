@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Events;
+
+
+
 
 
 /// <summary>
@@ -18,6 +23,8 @@ public class Projectile : MonoBehaviour
     Player player;
 
     AudioSource shootingAudio;
+
+    private float bulletSpeed;
 
     [SerializeField] private float damage;
     [SerializeField] private float lifeTime;
@@ -40,7 +47,7 @@ public class Projectile : MonoBehaviour
             player.DealDamage(damage);
             Destroy(gameObject);
         }
-        
+
     }
 
 
