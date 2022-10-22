@@ -186,4 +186,14 @@ public class GameGrid : MonoBehaviour
             return data;
         }
     }
+
+    public bool checkGridPosValidity(Vector2Int pos){
+        if (pos.x >= width || pos.y >= height) return false;
+        return true;
+    }
+    
+    public GridCell GetGridCell(Vector2Int pos){
+        return this.grid[pos.x, pos.y].GetComponent<GridCell>();
+    }
+
 }
