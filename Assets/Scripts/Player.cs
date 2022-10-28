@@ -21,6 +21,8 @@ public class Player : MonoBehaviour
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float health;
 
+    private float maxHealth;
+
     //System event invoked when player dies
     public event KillPlayerEvent m_Kill;
 
@@ -31,14 +33,19 @@ public class Player : MonoBehaviour
     private Vector3 cameraForwardVector;
     private Vector3 cameraRightVector;
 
+    private Material playerMat;
+
     // Start is called before the first frame update
     void Start()
     {
+        maxHealth = health;
         healthBar = FindObjectOfType<Slider>();
         healthBar.minValue = 0; 
         healthBar.maxValue = health;
         healthBar.value = health;
-        m_Rigidbody = GetComponent<Rigidbody>();    
+        m_Rigidbody = GetComponent<Rigidbody>();
+        playerMat = GetComponent<MeshRenderer>().material;
+        ResetMaterial();
     }
 
     // Update is called once per frame
@@ -52,6 +59,8 @@ public class Player : MonoBehaviour
     internal void DealDamage(float damage)
     {
         health -= damage;
+        float GB_Value = fromHealthtoRGB(health);
+        playerMat.color = new Color(1, GB_Value / 255, GB_Value / 255, 1/(GB_Value/255));
         healthBar.value = health;
         if (health <= 0)
         {
@@ -104,5 +113,14 @@ public class Player : MonoBehaviour
         }
 
         //Debug.Log(m_Rigidbody.velocity);
+    }
+
+
+    private float fromHealthtoRGB(float currHealth){
+        return (currHealth / maxHealth) * 255;
+    }
+
+    private void ResetMaterial(){
+        playerMat.color = Color.white;
     }
 }

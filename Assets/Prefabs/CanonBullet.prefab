@@ -67,6 +67,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 2.5
   lifeTime: 5
+  ignoreCollisionLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!33 &3361626394540898373
 MeshFilter:
   m_ObjectHideFlags: 0

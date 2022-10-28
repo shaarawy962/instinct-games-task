@@ -64,6 +64,7 @@ MonoBehaviour:
   m_Speed: 500
   m_Camera: {fileID: 0}
   health: 100
+  playerMat: {fileID: 2100000, guid: 8565feb670cce36438a44866a1c897f9, type: 2}
 --- !u!54 &1926052774369741127
 Rigidbody:
   m_ObjectHideFlags: 0

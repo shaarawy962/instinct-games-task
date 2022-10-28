@@ -28,20 +28,24 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool isSpawnWalls;
     [SerializeField] public int collectiblesCount;
     [SerializeField] public int boxesCount;
+    [SerializeField] private TMP_Text winLoseText;
+    [SerializeField] private TMP_Text collectiblesText;
 
 
     /// <summary>
     /// references for the active gameObjects in the scene to be used in managing the game from start to win-lose situations
     /// </summary>
     private GameGrid mainGrid;
-    private TMP_Text winLoseText;
     private Player player;
     private SimpleCollectibleScript[] collectibleScripts;
+
+    private int collected;
 
     internal TurretSpawnInfo spawnInfo;
 
     private void Awake()
     {
+        collected = 0;
         spawnInfo = this.readTurretInformation(Application.streamingAssetsPath + "/game-config.json");
         Debug.Log($"Spawn Information: no of turrets: {spawnInfo.numberOfTurrets}, location 0: {spawnInfo.turretGridPositions[0].ToString()}");
     }
@@ -50,7 +54,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         player = FindObjectOfType<Player>();
-        winLoseText = FindObjectOfType<TMP_Text>();
         mainGrid = FindObjectOfType<GameGrid>();
 
         //Spawn turrets basaed on Json Files
@@ -69,6 +72,7 @@ public class GameManager : MonoBehaviour
         }
 
         winLoseText.text = "";
+        collectiblesText.text = $"{collected} / {collectiblesCount}";
 
         /// Initialize the collect event in the collectible script on game start for all collectible instances
         collectibleScripts = FindObjectsOfType<SimpleCollectibleScript>();
@@ -78,8 +82,9 @@ public class GameManager : MonoBehaviour
             {
                 GridCell cell = collectibleScript.attachedCell;
                 cell.isOccupied = false;
-                collectiblesCount--;
-                if (collectiblesCount == 0)
+                collected++;
+                collectiblesText.text = $"{collected} / {collectiblesCount}";
+                if (collected == collectiblesCount)
                 {
                     winLoseText.text = "You Win!";
                     Time.timeScale = 0;

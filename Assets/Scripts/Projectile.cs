@@ -29,6 +29,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float lifeTime;
 
+    public LayerMask ignoreCollisionLayer;
+
     private void Awake()
     {
         ///Reference Setters from game hierarchy
@@ -42,12 +44,15 @@ public class Projectile : MonoBehaviour
     //Collision detection to deal damage
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player.gameObject)
-        {
-            player.DealDamage(damage);
+        if(other.gameObject.layer != ignoreCollisionLayer){
+            if (other.gameObject == player.gameObject)
+            {
+                player.DealDamage(damage);
+                
+            }
             Destroy(gameObject);
         }
-
+        
     }
 
 

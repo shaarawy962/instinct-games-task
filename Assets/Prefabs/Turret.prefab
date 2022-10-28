@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 680526429117904229}
   - component: {fileID: 680526429117904231}
   - component: {fileID: 680526429117904228}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_joint_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 680526429138029775}
   - component: {fileID: 680526429138029769}
   - component: {fileID: 680526429138029774}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_Joint_Cannon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 680526429146500374}
   - component: {fileID: 680526429146500368}
   - component: {fileID: 680526429146500369}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_Ring_bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +262,7 @@ GameObject:
   - component: {fileID: 680526429293961828}
   - component: {fileID: 680526429293961830}
   - component: {fileID: 680526429293961831}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_cap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 680526429349885757}
   - component: {fileID: 680526429349885759}
   - component: {fileID: 680526429349885756}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_arm_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -431,9 +431,9 @@ GameObject:
   - component: {fileID: 168734238}
   - component: {fileID: 168734239}
   - component: {fileID: 3962983365237630842}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Turret
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -467,14 +467,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 3.5
-  angle: 100
-  playerRef: {fileID: 0}
   targetMask:
     serializedVersion: 2
     m_Bits: 128
   ObstructionMask:
     serializedVersion: 2
     m_Bits: 256
+  angle: 100
+  playerRef: {fileID: 0}
   bCanSeePlayer: 0
 --- !u!114 &168734238
 MonoBehaviour:
@@ -532,7 +532,7 @@ GameObject:
   - component: {fileID: 680526429477232676}
   - component: {fileID: 680526429477232678}
   - component: {fileID: 680526429477232679}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_arm_Joint_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 680526429704310066}
   - component: {fileID: 680526429704310076}
   - component: {fileID: 680526429704310077}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rotating_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -700,7 +700,7 @@ GameObject:
   - component: {fileID: 680526429768373066}
   - component: {fileID: 680526429768373067}
   - component: {fileID: 680526429768373064}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +786,7 @@ GameObject:
   - component: {fileID: 680526429875040458}
   - component: {fileID: 680526429875040500}
   - component: {fileID: 680526429875040501}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rear_arm_A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -870,7 +870,7 @@ GameObject:
   - component: {fileID: 680526430054288091}
   - component: {fileID: 680526430054288069}
   - component: {fileID: 680526430054288090}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_Spout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -953,7 +953,7 @@ GameObject:
   - component: {fileID: 680526430081334829}
   - component: {fileID: 680526430081334831}
   - component: {fileID: 680526430081334828}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: battery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1036,7 +1036,7 @@ GameObject:
   - component: {fileID: 680526430086226658}
   - component: {fileID: 680526430086226668}
   - component: {fileID: 680526430086226669}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rear_arm_joint_Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,7 +1120,7 @@ GameObject:
   - component: {fileID: 680526430173603878}
   - component: {fileID: 680526430173603872}
   - component: {fileID: 680526430173603873}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rear_arm_join_Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1204,7 +1204,7 @@ GameObject:
   - component: {fileID: 680526430217323757}
   - component: {fileID: 680526430217323759}
   - component: {fileID: 680526430217323756}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Front_arm_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1288,7 +1288,7 @@ GameObject:
   - component: {fileID: 680526430482357519}
   - component: {fileID: 680526430482357513}
   - component: {fileID: 680526430482357518}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rear_arm_Joint_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1372,7 +1372,7 @@ GameObject:
   - component: {fileID: 680526430501876235}
   - component: {fileID: 680526430501876277}
   - component: {fileID: 680526430501876234}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ammo_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1455,7 +1455,7 @@ GameObject:
   - component: {fileID: 680526430579298551}
   - component: {fileID: 680526430579298545}
   - component: {fileID: 680526430579298550}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_pivot__paired
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1540,7 +1540,7 @@ GameObject:
   - component: {fileID: 680526430609143262}
   - component: {fileID: 680526430609143256}
   - component: {fileID: 680526430609143257}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Rear_Arm_B
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1624,7 +1624,7 @@ GameObject:
   - component: {fileID: 680526430751431198}
   - component: {fileID: 680526430751431192}
   - component: {fileID: 680526430751431193}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1710,7 +1710,7 @@ GameObject:
   - component: {fileID: 680526430920154090}
   - component: {fileID: 680526430920153876}
   - component: {fileID: 680526430920153877}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Central_Tracks_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1795,7 +1795,7 @@ GameObject:
   - component: {fileID: 680526430970861660}
   - component: {fileID: 680526430970861662}
   - component: {fileID: 680526430970861663}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_rim_R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1878,7 +1878,7 @@ GameObject:
   - component: {fileID: 680526431031052227}
   - component: {fileID: 680526431031052237}
   - component: {fileID: 680526431031052226}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Canon_rim_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
